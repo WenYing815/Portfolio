@@ -139,6 +139,48 @@ section { max-width:1100px; margin:0 auto; padding:2rem 2rem 5rem; }
   padding:2.5rem 2.5rem 2rem;
   border-bottom:1px solid var(--border);
 }
+
+/* --- NEW CSS FOR PROJECT HEADER LAYOUT --- */
+.project-header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media(min-width: 800px) {
+  .project-header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+.project-header-content {
+  flex: 1;
+}
+.project-header-images {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 280px; /* Adjust width of the right column here */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.project-header-images img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.img-logo {
+  object-fit: contain;
+  background: white;
+  padding: 1rem;
+}
+.img-banner {
+  object-fit: cover;
+  aspect-ratio: 16/9;
+}
+/* ------------------------------------------ */
+
 .project-header .overline {
   font-family:var(--mono); font-size:0.7rem; font-weight:500;
   letter-spacing:0.12em; text-transform:uppercase;
@@ -298,17 +340,29 @@ footer a { color:var(--accent); text-decoration:none; }
   <div class="section-label">Case Study 01</div>
   <div class="project-card">
     <div class="project-header">
-      <div class="overline" style="color:var(--coral);">Business Consultant</div>
-      <h2>Redesigning the Digital Engagement Journey for a Child Bereavement Charity</h2>
-      <p class="desc">
-        Analysed how website visitors, potential donors and community partners experienced
-        Richmond's Hope's digital presence — and designed a structured action framework
-        to close the gap between emotional storytelling and meaningful conversion.
-      </p>
-      <div class="project-meta">
-        <div class="meta-item"><span class="meta-label">Client</span><span class="meta-value">Richmond's Hope (via Blackmont Consulting)</span></div>
-        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">Jan – Feb 2026</span></div>
-        <div class="meta-item"><span class="meta-label">My Role</span><span class="meta-value">Lead Analyst — Digital Audit &amp; Benchmarking</span></div>
+      
+      <div class="project-header-inner">
+        
+        <div class="project-header-content">
+          <div class="overline" style="color:var(--coral);">Business Consultant</div>
+          <h2>Redesigning the Digital Engagement Journey for a Child Bereavement Charity</h2>
+          <p class="desc">
+            Analysed how website visitors, potential donors and community partners experienced
+            Richmond's Hope's digital presence — and designed a structured action framework
+            to close the gap between emotional storytelling and meaningful conversion.
+          </p>
+          <div class="project-meta">
+            <div class="meta-item"><span class="meta-label">Client</span><span class="meta-value">Richmond's Hope (via Blackmont Consulting)</span></div>
+            <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">Jan – Feb 2026</span></div>
+            <div class="meta-item"><span class="meta-label">My Role</span><span class="meta-value">Lead Analyst — Digital Audit &amp; Benchmarking</span></div>
+          </div>
+        </div>
+
+        <div class="project-header-images">
+          <img src="download.jpg" alt="Richmond's Hope Logo" class="img-logo">
+          <img src="Linkedin Image Blackmont Recruitment.jpg" alt="Blackmont Consulting Banner" class="img-banner">
+        </div>
+
       </div>
     </div>
 
