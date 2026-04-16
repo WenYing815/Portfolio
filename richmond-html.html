@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Richmond's Hope — Wen Ying</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F8F7F4;
+  --bg-warm: #F3F1EC;
+  --surface: #FFFFFF;
+  --text: #1A1A18;
+  --text-secondary: #7A7870;
+  --text-tertiary: #A8A59E;
+  --accent: #8B7355;
+  --accent-light: #F5F1EB;
+  --accent-dark: #6B5740;
+  --border: #E8E5DE;
+  --border-light: #F0EDE7;
+  --tag-bg: #EFECE6;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.72;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(248, 247, 244, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  transition: box-shadow 0.3s var(--ease);
+}
+nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+nav .inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 60px; padding: 0 2rem;
+}
+.nav-left { display: flex; align-items: center; gap: 1.5rem; }
+.nav-back {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.25s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.nav-back:hover { color: var(--accent); }
+nav .name {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+nav .links { display: flex; align-items: center; gap: 2rem; }
+nav .links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.25s var(--ease);
+  position: relative;
+}
+nav .links a.active { color: var(--text); }
+nav .links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+}
+nav .links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease);
+}
+nav .links a:not(.active):hover { color: var(--accent); }
+nav .links a:not(.active):hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ─── CASE STUDY HEADER ─── */
+.case-header {
+  max-width: 1080px; margin: 0 auto;
+  padding: 8rem 2rem 3rem;
+}
+.case-header-inner {
+  display: flex; flex-direction: column; gap: 2.5rem;
+}
+@media(min-width: 820px) {
+  .case-header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+  }
+}
+.case-header-content { flex: 1; max-width: 680px; }
+.case-header-images {
+  flex-shrink: 0; width: 100%; max-width: 260px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.case-header-images img {
+  width: 100%; border-radius: 10px;
+  border: 1px solid var(--border-light);
+  filter: grayscale(10%);
+}
+.img-logo { object-fit: contain; background: white; padding: 0.75rem; }
+.img-banner { object-fit: cover; aspect-ratio: 16/9; }
+
+.case-overline {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+.case-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+  line-height: 1.22;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.case-desc {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  max-width: 620px;
+}
+.case-meta {
+  display: flex; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+.case-meta .meta-item { font-size: 0.8rem; }
+.case-meta .meta-label {
+  font-weight: 500; color: var(--text);
+  display: block; margin-bottom: 0.3rem;
+  letter-spacing: 0.01em;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.case-meta .meta-value { color: var(--text-secondary); font-weight: 300; }
+
+/* ─── BODY ─── */
+.case-body {
+  max-width: 1080px; margin: 0 auto;
+  padding: 2rem 2rem 5rem;
+}
+
+/* ─── PHASE BLOCKS ─── */
+.phase { margin-bottom: 3.5rem; max-width: 780px; }
+.phase:last-child { margin-bottom: 0; }
+
+.phase-label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.phase-icon {
+  width: 16px; height: 16px;
+  color: var(--accent);
+  stroke-width: 1.8;
+}
+
+.phase h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+  line-height: 1.35;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.phase p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+
+/* ─── DIAGRAMS ─── */
+.diagram-wrap {
+  background: var(--bg-warm);
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+}
+.diagram-wrap svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-top: 1.5rem;
+  font-style: italic;
+}
+
+/* ─── INSIGHT CALLOUT ─── */
+.insight-callout {
+  background: var(--accent-light);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  max-width: 780px;
+}
+.insight-callout .callout-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.insight-callout .callout-icon {
+  width: 14px; height: 14px;
+  color: var(--accent-dark);
+  stroke-width: 2;
+}
+.insight-callout p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--accent-dark);
+  line-height: 1.75;
+}
+.insight-callout strong { font-weight: 500; }
+
+/* ─── OUTCOME METRICS ─── */
+.outcomes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  max-width: 780px;
+}
+.outcome-card {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s var(--ease);
+}
+.outcome-card:hover { border-color: var(--accent); }
+.outcome-card .num {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.2;
+}
+.outcome-card .label {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+/* ─── NEXT PROJECT TEASER ─── */
+.next-project {
+  max-width: 1080px; margin: 0 auto;
+  padding: 0 2rem;
+}
+.next-project-inner {
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+.next-project-inner:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.next-project-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.next-project-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.next-project-arrow {
+  font-size: 1.6rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.3s var(--ease);
+}
+.next-project-inner:hover .next-project-arrow { transform: translateX(6px); }
+
+/* ─── FOOTER ─── */
+footer {
+  max-width: 1080px; margin: 0 auto;
+  padding: 4rem 2rem 5rem;
+  margin-top: 4rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer .footer-heading {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+footer .footer-details {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+footer a:hover { border-bottom-color: var(--accent); }
+footer .footer-sep {
+  display: inline-block;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  margin: 0 0.75rem;
+  vertical-align: middle;
+}
+
+@media(max-width: 640px) {
+  .case-header { padding: 6rem 1.5rem 2rem; }
+  .case-body { padding: 1rem 1.5rem 3rem; }
+  .diagram-wrap { padding: 1.5rem 1rem; }
+  nav .links { gap: 1.25rem; }
+  nav .links a { font-size: 0.72rem; }
+  nav .inner { padding: 0 1.5rem; }
+  .nav-left { gap: 0.75rem; }
+  .nav-back { font-size: 0.72rem; }
+  nav .name { font-size: 1.1rem; }
+  .case-header-images { max-width: 100%; }
+  .next-project { padding: 0 1.5rem; }
+  .next-project-inner { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .case-meta { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="nav-left">
+      <a href="index.html" class="nav-back">← Back</a>
+      <a href="index.html" class="name">Wen Ying</a>
+    </div>
+    <div class="links">
+      <a href="index.html">About</a>
+      <a href="index.html#work" class="active">Work</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ CASE STUDY HEADER ═══════════════════ -->
+
+<header class="case-header">
+  <div class="case-header-inner reveal">
+    <div class="case-header-content">
+      <div class="case-overline">Case Study 01 · Business Consultant</div>
+      <h1>Redesigning the Digital Engagement Journey for a Child Bereavement Charity</h1>
+      <p class="case-desc">
+        Analysed how website visitors, potential donors and community partners experienced
+        Richmond's Hope's digital presence — and designed a structured action framework
+        to close the gap between emotional storytelling and meaningful conversion.
+      </p>
+      <div class="case-meta">
+        <div class="meta-item"><span class="meta-label">Client</span><span class="meta-value">Richmond's Hope (via Blackmont Consulting)</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">Jan – Feb 2026</span></div>
+        <div class="meta-item"><span class="meta-label">My Role</span><span class="meta-value">Lead Analyst — Digital Audit &amp; Benchmarking</span></div>
+      </div>
+    </div>
+    <div class="case-header-images">
+      <img src="download.jpg" alt="Richmond's Hope Logo" class="img-logo">
+      <img src="Linkedin%20Image%20Blackmont%20Recruitment.PNG" alt="Blackmont Consulting Banner" class="img-banner">
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════ BODY ═══════════════════ -->
+
+<main class="case-body">
+
+  <!-- Phase: Discover -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Discover
+    </div>
+    <h2>The charity told powerful stories — but visitors didn't know what to do next</h2>
+    <p>
+      Richmond's Hope supports bereaved children across Scotland. Their website communicated the emotional weight of their mission effectively, but I needed to understand whether this translated into action. I mapped the existing digital presence — website pages, social media channels, and public-facing content — against three core conversion pathways: donation, referral, and partnership enquiry.
+    </p>
+  </div>
+
+  <!-- Diagram 1: Visitor Journey Before -->
+  <div class="diagram-wrap reveal">
+    <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;">
+      <text x="380" y="28" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#7A7870" letter-spacing="0.1em">VISITOR JOURNEY — BEFORE AUDIT</text>
+      <g transform="translate(40,55)">
+        <rect x="0" y="0" width="130" height="70" rx="10" fill="#fff" stroke="#E8E5DE" stroke-width="1.2"/>
+        <text x="65" y="28" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#1A1A18">Visitor arrives</text>
+        <text x="65" y="46" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#7A7870">Search / Social / Referral</text>
+        <line x1="135" y1="35" x2="170" y2="35" stroke="#C8C4BC" stroke-width="1.2" marker-end="url(#arrowGrey)"/>
+        <rect x="175" y="0" width="130" height="70" rx="10" fill="#fff" stroke="#E8E5DE" stroke-width="1.2"/>
+        <text x="240" y="28" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#1A1A18">Reads story</text>
+        <text x="240" y="46" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#7A7870">Emotional engagement</text>
+        <line x1="310" y1="35" x2="345" y2="35" stroke="#C8C4BC" stroke-width="1.2" marker-end="url(#arrowGrey)"/>
+        <rect x="350" y="0" width="140" height="70" rx="10" fill="#F8F3ED" stroke="#8B7355" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <text x="420" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#8B7355">Wants to act</text>
+        <text x="420" y="42" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#8B7355">No clear CTA visible</text>
+        <text x="420" y="57" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#8B7355">Donate? Refer? Partner?</text>
+        <line x1="490" y1="45" x2="540" y2="80" stroke="#8B7355" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <rect x="520" y="80" width="130" height="45" rx="8" fill="#F8F3ED" stroke="#8B7355" stroke-width="1"/>
+        <text x="585" y="100" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#8B7355">Drop-off</text>
+        <text x="585" y="116" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#8B7355">Intent lost</text>
+      </g>
+      <g transform="translate(40,175)">
+        <rect x="0" y="0" width="680" height="44" rx="8" fill="#FAF6F0" stroke="#C8B080" stroke-width="0.8"/>
+        <text x="340" y="17" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10.5" font-weight="600" fill="#8B7355">GAP IDENTIFIED</text>
+        <text x="340" y="35" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#7A7870">Strong emotional content → Weak conversion pathways — message and CTA misalignment across all three engagement routes</text>
+      </g>
+      <g transform="translate(40, 245)">
+        <rect x="0" y="0" width="210" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="0.8" stroke-dasharray="4,3"/>
+        <text x="105" y="20" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#8B7355">Donation Path</text>
+        <text x="105" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" fill="#A8A59E">Buried link, no urgency framing</text>
+        <rect x="235" y="0" width="210" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="0.8" stroke-dasharray="4,3"/>
+        <text x="340" y="20" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#8B7355">Referral Path</text>
+        <text x="340" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" fill="#A8A59E">No school/GP-facing guidance</text>
+        <rect x="470" y="0" width="210" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="0.8" stroke-dasharray="4,3"/>
+        <text x="575" y="20" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#8B7355">Partnership Path</text>
+        <text x="575" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" fill="#A8A59E">No corporate value proposition</text>
+      </g>
+      <defs>
+        <marker id="arrowGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#C8C4BC"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">User journey mapping revealed a critical disconnect between emotional engagement and conversion</div>
+  </div>
+
+  <!-- Phase: Research -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+      Research
+    </div>
+    <h2>Benchmarking peer charities to understand what "good" looks like</h2>
+    <p>
+      I conducted a comparative analysis of peer child bereavement and youth support charities, examining how they structured their digital engagement across three dimensions: school partnerships (the primary referral channel), corporate partnerships (the primary funding channel), and community engagement. This research revealed clear patterns in how effective charities connected their mission narrative to specific, audience-tailored calls-to-action.
+    </p>
+  </div>
+
+  <div class="insight-callout reveal">
+    <div class="callout-label">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      </svg>
+      Key Insight
+    </div>
+    <p>
+      The most effective peer charities didn't simply add more CTAs — they designed <strong>audience-specific entry points</strong>. A school visitor needed safeguarding language and referral forms; a corporate visitor needed impact metrics and partnership tiers. Richmond's Hope used a single, generic narrative for all audiences.
+    </p>
+  </div>
+
+  <!-- Phase: Solution -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      Solution
+    </div>
+    <h2>A structured action framework mapping each audience to a conversion pathway</h2>
+    <p>
+      Rather than recommending a full website redesign (which exceeded the charity's capacity), I designed a prioritised action framework that mapped specific, implementable changes to each of the three conversion pathways. Each recommendation was scoped to the charity's existing resources and ranked by impact-to-effort ratio.
+    </p>
+  </div>
+
+  <!-- Diagram 2: Proposed Framework -->
+  <div class="diagram-wrap reveal">
+    <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;">
+      <text x="380" y="26" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#7A7870" letter-spacing="0.1em">PROPOSED ENGAGEMENT FRAMEWORK</text>
+      <rect x="280" y="50" width="200" height="50" rx="25" fill="#1A1A18" stroke="none"/>
+      <text x="380" y="80" text-anchor="middle" font-family="Outfit,sans-serif" font-size="12" font-weight="500" fill="#fff">Richmond's Hope Mission</text>
+      <line x1="310" y1="100" x2="140" y2="140" stroke="#1A1A18" stroke-width="1" opacity="0.25"/>
+      <line x1="380" y1="100" x2="380" y2="140" stroke="#1A1A18" stroke-width="1" opacity="0.25"/>
+      <line x1="450" y1="100" x2="620" y2="140" stroke="#1A1A18" stroke-width="1" opacity="0.25"/>
+      <g transform="translate(30,140)">
+        <rect x="0" y="0" width="220" height="140" rx="12" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <rect x="0" y="0" width="220" height="36" rx="12" fill="#8B7355"/>
+        <rect x="0" y="18" width="220" height="18" fill="#8B7355"/>
+        <text x="110" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#fff" letter-spacing="0.06em">DONATE</text>
+        <text x="20" y="60" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Embed donate CTA on every story</text>
+        <text x="20" y="80" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Add impact framing ("£20 = 1 session")</text>
+        <text x="20" y="100" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Monthly giving option on homepage</text>
+        <text x="20" y="126" font-family="Outfit,sans-serif" font-size="8.5" fill="#8B7355" font-weight="500">Priority: High · Effort: Low</text>
+      </g>
+      <g transform="translate(270,140)">
+        <rect x="0" y="0" width="220" height="140" rx="12" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <rect x="0" y="0" width="220" height="36" rx="12" fill="#6B5740"/>
+        <rect x="0" y="18" width="220" height="18" fill="#6B5740"/>
+        <text x="110" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#fff" letter-spacing="0.06em">REFER</text>
+        <text x="20" y="60" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">School-specific landing page</text>
+        <text x="20" y="80" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Downloadable referral checklist</text>
+        <text x="20" y="100" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">GP/counsellor signposting guide</text>
+        <text x="20" y="126" font-family="Outfit,sans-serif" font-size="8.5" fill="#6B5740" font-weight="500">Priority: High · Effort: Medium</text>
+      </g>
+      <g transform="translate(510,140)">
+        <rect x="0" y="0" width="220" height="140" rx="12" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <rect x="0" y="0" width="220" height="36" rx="12" fill="#4A3D2E"/>
+        <rect x="0" y="18" width="220" height="18" fill="#4A3D2E"/>
+        <text x="110" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#fff" letter-spacing="0.06em">PARTNER</text>
+        <text x="20" y="60" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Corporate partnership tiers page</text>
+        <text x="20" y="80" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Impact dashboard for sponsors</text>
+        <text x="20" y="100" font-family="Outfit,sans-serif" font-size="9.5" fill="#1A1A18" font-weight="400">Community event toolkit</text>
+        <text x="20" y="126" font-family="Outfit,sans-serif" font-size="8.5" fill="#4A3D2E" font-weight="500">Priority: Medium · Effort: Medium</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Action framework prioritising high-impact, low-effort changes across three conversion pathways</div>
+  </div>
+
+  <!-- Phase: Outcome -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      Outcome
+    </div>
+    <h2>A practical, capacity-aware roadmap the board could act on</h2>
+    <p>
+      The final deliverable was a client-facing presentation used by the charity's board to guide their digital strategy. The board's feedback highlighted that the prioritised, implementation-ready format was more useful than previous advice they had received, which had been too ambitious for their operational capacity.
+    </p>
+  </div>
+
+  <div class="outcomes reveal">
+    <div class="outcome-card"><div class="num">3</div><div class="label">Conversion pathways mapped</div></div>
+    <div class="outcome-card"><div class="num">6</div><div class="label">Peer charities benchmarked</div></div>
+    <div class="outcome-card"><div class="num">9</div><div class="label">Prioritised recommendations</div></div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════ NEXT PROJECT ═══════════════════ -->
+
+<div class="next-project reveal">
+  <a href="citybalance.html" class="next-project-inner">
+    <div>
+      <div class="next-project-label">Next project</div>
+      <div class="next-project-title">CityBalance — Redirecting Airbnb's AI to Solve Overtourism</div>
+    </div>
+    <span class="next-project-arrow">→</span>
+  </a>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+
+<footer id="contact">
+  <p class="footer-heading">Let's connect</p>
+  <p class="footer-details">
+    <a href="mailto:uclqyin@ucl.ac.uk">uclqyin@ucl.ac.uk</a>
+    <span class="footer-sep"></span>
+    +44 07962633727
+    <span class="footer-sep"></span>
+    London, UK
+  </p>
+</footer>
+
+<script>
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

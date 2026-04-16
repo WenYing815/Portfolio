@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wen Ying — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F8F7F4;
+  --bg-warm: #F3F1EC;
+  --surface: #FFFFFF;
+  --text: #1A1A18;
+  --text-secondary: #7A7870;
+  --text-tertiary: #A8A59E;
+  --accent: #8B7355;
+  --accent-light: #F5F1EB;
+  --accent-dark: #6B5740;
+  --border: #E8E5DE;
+  --border-light: #F0EDE7;
+  --tag-bg: #EFECE6;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.72;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(248, 247, 244, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  transition: box-shadow 0.3s var(--ease);
+}
+nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+nav .inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 60px; padding: 0 2rem;
+}
+nav .name {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+nav .links { display: flex; align-items: center; gap: 2rem; }
+nav .links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.25s var(--ease);
+  position: relative;
+}
+nav .links a.active { color: var(--text); }
+nav .links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+}
+nav .links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease);
+}
+nav .links a:not(.active):hover { color: var(--accent); }
+nav .links a:not(.active):hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ─── HERO ─── */
+.hero {
+  max-width: 1080px; margin: 0 auto;
+  padding: 9rem 2rem 5rem;
+}
+.hero-inner {
+  display: flex; flex-direction: column-reverse;
+  gap: 3.5rem; align-items: center;
+}
+@media(min-width: 820px) {
+  .hero-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5rem;
+  }
+}
+.hero-content { flex: 1; }
+.hero-image { flex-shrink: 0; width: 100%; max-width: 280px; }
+.hero-image img {
+  width: 100%; aspect-ratio: 4/5;
+  object-fit: cover; border-radius: 12px;
+  filter: grayscale(15%) contrast(1.02);
+  transition: filter 0.5s var(--ease);
+}
+.hero-image img:hover { filter: grayscale(0%) contrast(1); }
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  line-height: 1.18;
+  font-weight: 400;
+  color: var(--text);
+  max-width: 620px;
+  margin-bottom: 1.75rem;
+  letter-spacing: -0.015em;
+}
+.hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  max-width: 540px;
+  line-height: 1.85;
+  margin-bottom: 2.5rem;
+}
+.hero-sub strong { font-weight: 500; color: var(--text); }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 100px;
+  background: var(--tag-bg);
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.tag:hover { background: var(--accent-light); color: var(--accent); }
+
+/* ─── SECTION DIVIDER ─── */
+.section-divider { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+.section-divider hr { border: none; height: 1px; background: var(--border); }
+
+/* ─── WORK SECTION ─── */
+section.work {
+  max-width: 1080px; margin: 0 auto;
+  padding: 5rem 2rem 5rem;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+
+/* ─── PROJECT GRID ─── */
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+}
+@media(min-width: 820px) {
+  .project-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+}
+
+.project-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.02);
+  transition: box-shadow 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.4s var(--ease);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.project-preview:hover {
+  box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+.preview-image {
+  aspect-ratio: 16 / 10;
+  background: var(--bg-warm);
+  border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.preview-image svg {
+  width: 85%;
+  height: auto;
+  transition: transform 0.6s var(--ease);
+}
+.project-preview:hover .preview-image svg {
+  transform: scale(1.04);
+}
+
+.preview-body {
+  padding: 1.75rem 1.75rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.preview-overline {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+.preview-title {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.preview-meta {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+.preview-cta {
+  margin-top: auto;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.02em;
+  transition: gap 0.3s var(--ease);
+}
+.project-preview:hover .preview-cta { gap: 0.7rem; }
+.preview-cta .arrow {
+  font-size: 0.9rem;
+  transition: transform 0.3s var(--ease);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  max-width: 1080px; margin: 0 auto;
+  padding: 4rem 2rem 5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer .footer-heading {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+footer .footer-details {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+footer a:hover { border-bottom-color: var(--accent); }
+footer .footer-sep {
+  display: inline-block;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  margin: 0 0.75rem;
+  vertical-align: middle;
+}
+
+@media(max-width: 640px) {
+  .hero { padding: 7rem 1.5rem 3.5rem; }
+  section.work { padding: 3.5rem 1.5rem; }
+  nav .links { gap: 1.25rem; }
+  nav .links a { font-size: 0.72rem; }
+  nav .inner { padding: 0 1.5rem; }
+  .preview-body { padding: 1.5rem; }
+  .preview-title { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a href="index.html" class="name">Wen Ying</a>
+    <div class="links">
+      <a href="index.html" class="active">About</a>
+      <a href="index.html#work">Work</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+
+<header class="hero">
+  <div class="hero-inner reveal">
+    <div class="hero-content">
+      <div class="hero-label">Portfolio — 2026</div>
+      <h1>Understanding people, designing better systems</h1>
+      <p class="hero-sub">
+        I'm a second-year BASc student at UCL studying Economics, Mathematics and Quantitative Methods.
+        My work sits at the intersection of <strong>structured analysis</strong> and <strong>human-centred thinking</strong> —
+        understanding how people interact with systems, finding where things break down, and designing solutions that actually fit how organisations and users work.
+      </p>
+      <div class="tags">
+        <span class="tag">Service Design</span>
+        <span class="tag">User Journey Analysis</span>
+        <span class="tag">Data-Driven Research</span>
+        <span class="tag">Systems Mapping</span>
+        <span class="tag">Cross-Cultural Communication</span>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="2e2ac751ba50fac6e4fe5c783db6f2da.jpg" alt="Wen Ying Portrait">
+    </div>
+  </div>
+</header>
+
+<div class="section-divider"><hr></div>
+
+<!-- ═══════════════════ SELECTED WORK ═══════════════════ -->
+
+<section class="work" id="work">
+  <div class="section-label reveal">Selected Work</div>
+
+  <div class="project-grid">
+
+    <!-- ── Card 1: Richmond's Hope ── -->
+    <a href="richmond.html" class="project-link reveal">
+      <div class="project-preview">
+        <div class="preview-image">
+          <svg viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- Three pathway boxes -->
+            <rect x="30" y="60" width="95" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+            <text x="77.5" y="84" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Donate</text>
+            <text x="77.5" y="100" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#A8A59E">High · Low</text>
+
+            <rect x="152.5" y="60" width="95" height="50" rx="8" fill="#fff" stroke="#6B5740" stroke-width="1"/>
+            <text x="200" y="84" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Refer</text>
+            <text x="200" y="100" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#A8A59E">High · Medium</text>
+
+            <rect x="275" y="60" width="95" height="50" rx="8" fill="#fff" stroke="#4A3D2E" stroke-width="1"/>
+            <text x="322.5" y="84" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#4A3D2E">Partner</text>
+            <text x="322.5" y="100" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#A8A59E">Medium · Medium</text>
+
+            <!-- Central mission pill -->
+            <rect x="140" y="15" width="120" height="28" rx="14" fill="#1A1A18"/>
+            <text x="200" y="34" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#fff">Mission</text>
+
+            <!-- Connecting lines -->
+            <line x1="170" y1="43" x2="90" y2="60" stroke="#1A1A18" stroke-width="0.8" opacity="0.25"/>
+            <line x1="200" y1="43" x2="200" y2="60" stroke="#1A1A18" stroke-width="0.8" opacity="0.25"/>
+            <line x1="230" y1="43" x2="310" y2="60" stroke="#1A1A18" stroke-width="0.8" opacity="0.25"/>
+
+            <!-- Bottom gap label -->
+            <rect x="75" y="145" width="250" height="32" rx="6" fill="#FAF6F0" stroke="#C8B080" stroke-width="0.6"/>
+            <text x="200" y="160" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" font-weight="600" fill="#8B7355" letter-spacing="0.08em">GAP IDENTIFIED</text>
+            <text x="200" y="172" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#7A7870">Emotion → conversion misalignment</text>
+
+            <!-- Three small path indicators -->
+            <circle cx="100" cy="200" r="3" fill="#8B7355"/>
+            <circle cx="200" cy="200" r="3" fill="#6B5740"/>
+            <circle cx="300" cy="200" r="3" fill="#4A3D2E"/>
+            <line x1="103" y1="200" x2="197" y2="200" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="2,2"/>
+            <line x1="203" y1="200" x2="297" y2="200" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="2,2"/>
+          </svg>
+        </div>
+        <div class="preview-body">
+          <div class="preview-overline">Case Study 01 · Consulting</div>
+          <h3 class="preview-title">Redesigning the digital engagement journey for a child bereavement charity</h3>
+          <p class="preview-meta">Richmond's Hope · Jan – Feb 2026</p>
+          <div class="preview-cta">Read case study <span class="arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <!-- ── Card 2: CityBalance ── -->
+    <a href="citybalance.html" class="project-link reveal">
+      <div class="project-preview">
+        <div class="preview-image">
+          <svg viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pivot box (dark) -->
+            <rect x="20" y="40" width="90" height="50" rx="8" fill="#1A1A18"/>
+            <text x="65" y="62" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#fff">SDG Pivot</text>
+            <text x="65" y="77" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="rgba(255,255,255,0.65)">AI redirect</text>
+
+            <line x1="113" y1="65" x2="128" y2="65" stroke="#1A1A18" stroke-width="1" marker-end="url(#pva)"/>
+
+            <!-- AI Recommender -->
+            <rect x="130" y="40" width="90" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+            <text x="175" y="62" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Recommender</text>
+            <text x="175" y="77" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#A8A59E">ML engine</text>
+
+            <line x1="223" y1="65" x2="238" y2="65" stroke="#8B7355" stroke-width="1" marker-end="url(#pva2)"/>
+
+            <!-- IoT -->
+            <rect x="240" y="40" width="90" height="50" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+            <text x="285" y="62" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Real-time IoT</text>
+            <text x="285" y="77" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#A8A59E">Foot traffic</text>
+
+            <!-- Decision diamond -->
+            <line x1="285" y1="90" x2="285" y2="108" stroke="#7A7870" stroke-width="1"/>
+            <polygon points="285,110 325,140 285,170 245,140" fill="#fff" stroke="#7A7870" stroke-width="1"/>
+            <text x="285" y="138" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" font-weight="500" fill="#1A1A18">Sensors?</text>
+            <text x="285" y="150" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#7A7870">Y / N</text>
+
+            <!-- Outcomes -->
+            <rect x="30" y="185" width="80" height="28" rx="6" fill="#F8F3ED" stroke="#8B7355" stroke-width="0.6"/>
+            <text x="70" y="203" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" fill="#6B5740">Community</text>
+
+            <rect x="120" y="185" width="80" height="28" rx="6" fill="#F5F4F0" stroke="#A8A59E" stroke-width="0.6"/>
+            <text x="160" y="203" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" fill="#5F5E5A">Business</text>
+
+            <rect x="210" y="185" width="80" height="28" rx="6" fill="#F8F3ED" stroke="#6B5740" stroke-width="0.6"/>
+            <text x="250" y="203" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" fill="#6B5740">Tourists</text>
+
+            <rect x="300" y="185" width="80" height="28" rx="6" fill="#1A1A18"/>
+            <text x="340" y="203" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" fill="#fff">Airbnb</text>
+
+            <defs>
+              <marker id="pva" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A18"/></marker>
+              <marker id="pva2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8B7355"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="preview-body">
+          <div class="preview-overline">Case Study 02 · Systems Design</div>
+          <h3 class="preview-title">CityBalance — redirecting Airbnb's AI to solve overtourism</h3>
+          <p class="preview-meta">UCL MSIN0051 · Feb – Apr 2026</p>
+          <div class="preview-cta">Read case study <span class="arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+
+<footer id="contact">
+  <p class="footer-heading">Let's connect</p>
+  <p class="footer-details">
+    <a href="mailto:uclqyin@ucl.ac.uk">uclqyin@ucl.ac.uk</a>
+    <span class="footer-sep"></span>
+    +44 07962633727
+    <span class="footer-sep"></span>
+    London, UK
+  </p>
+</footer>
+
+<script>
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

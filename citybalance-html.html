@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CityBalance — Wen Ying</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F8F7F4;
+  --bg-warm: #F3F1EC;
+  --surface: #FFFFFF;
+  --text: #1A1A18;
+  --text-secondary: #7A7870;
+  --text-tertiary: #A8A59E;
+  --accent: #8B7355;
+  --accent-light: #F5F1EB;
+  --accent-dark: #6B5740;
+  --border: #E8E5DE;
+  --border-light: #F0EDE7;
+  --tag-bg: #EFECE6;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.72;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(248, 247, 244, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  transition: box-shadow 0.3s var(--ease);
+}
+nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+nav .inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 60px; padding: 0 2rem;
+}
+.nav-left { display: flex; align-items: center; gap: 1.5rem; }
+.nav-back {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.25s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.nav-back:hover { color: var(--accent); }
+nav .name {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+nav .links { display: flex; align-items: center; gap: 2rem; }
+nav .links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.25s var(--ease);
+  position: relative;
+}
+nav .links a.active { color: var(--text); }
+nav .links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+}
+nav .links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease);
+}
+nav .links a:not(.active):hover { color: var(--accent); }
+nav .links a:not(.active):hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ─── CASE STUDY HEADER ─── */
+.case-header {
+  max-width: 1080px; margin: 0 auto;
+  padding: 8rem 2rem 3rem;
+}
+.case-header-inner {
+  display: flex; flex-direction: column; gap: 2.5rem;
+}
+@media(min-width: 820px) {
+  .case-header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+  }
+}
+.case-header-content { flex: 1; max-width: 680px; }
+.case-header-images {
+  flex-shrink: 0; width: 100%; max-width: 260px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.case-header-images img {
+  width: 100%; border-radius: 10px;
+  border: 1px solid var(--border-light);
+  filter: grayscale(10%);
+}
+.img-logo { object-fit: contain; background: white; padding: 0.75rem; }
+
+.case-overline {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+.case-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+  line-height: 1.22;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.case-desc {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  max-width: 620px;
+}
+.case-meta {
+  display: flex; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+.case-meta .meta-item { font-size: 0.8rem; }
+.case-meta .meta-label {
+  font-weight: 500; color: var(--text);
+  display: block; margin-bottom: 0.3rem;
+  letter-spacing: 0.01em;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.case-meta .meta-value { color: var(--text-secondary); font-weight: 300; }
+
+/* ─── BODY ─── */
+.case-body {
+  max-width: 1080px; margin: 0 auto;
+  padding: 2rem 2rem 5rem;
+}
+
+/* ─── PHASE BLOCKS ─── */
+.phase { margin-bottom: 3.5rem; max-width: 780px; }
+.phase:last-child { margin-bottom: 0; }
+
+.phase-label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.phase-icon {
+  width: 16px; height: 16px;
+  color: var(--accent);
+  stroke-width: 1.8;
+}
+
+.phase h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+  line-height: 1.35;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.phase p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+
+/* ─── DIAGRAMS ─── */
+.diagram-wrap {
+  background: var(--bg-warm);
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+}
+.diagram-wrap svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-top: 1.5rem;
+  font-style: italic;
+}
+
+/* ─── INSIGHT CALLOUT ─── */
+.insight-callout {
+  background: var(--accent-light);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  max-width: 780px;
+}
+.insight-callout .callout-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.insight-callout .callout-icon {
+  width: 14px; height: 14px;
+  color: var(--accent-dark);
+  stroke-width: 2;
+}
+.insight-callout p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--accent-dark);
+  line-height: 1.75;
+}
+.insight-callout strong { font-weight: 500; }
+
+/* ─── NEXT PROJECT TEASER ─── */
+.next-project {
+  max-width: 1080px; margin: 0 auto;
+  padding: 0 2rem;
+}
+.next-project-inner {
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+.next-project-inner:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.next-project-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.next-project-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.next-project-arrow {
+  font-size: 1.6rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.3s var(--ease);
+}
+.next-project-inner:hover .next-project-arrow { transform: translateX(6px); }
+
+/* ─── FOOTER ─── */
+footer {
+  max-width: 1080px; margin: 0 auto;
+  padding: 4rem 2rem 5rem;
+  margin-top: 4rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer .footer-heading {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+footer .footer-details {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+footer a:hover { border-bottom-color: var(--accent); }
+footer .footer-sep {
+  display: inline-block;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  margin: 0 0.75rem;
+  vertical-align: middle;
+}
+
+@media(max-width: 640px) {
+  .case-header { padding: 6rem 1.5rem 2rem; }
+  .case-body { padding: 1rem 1.5rem 3rem; }
+  .diagram-wrap { padding: 1.5rem 1rem; }
+  nav .links { gap: 1.25rem; }
+  nav .links a { font-size: 0.72rem; }
+  nav .inner { padding: 0 1.5rem; }
+  .nav-left { gap: 0.75rem; }
+  .nav-back { font-size: 0.72rem; }
+  nav .name { font-size: 1.1rem; }
+  .case-header-images { max-width: 100%; }
+  .next-project { padding: 0 1.5rem; }
+  .next-project-inner { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .case-meta { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="nav-left">
+      <a href="index.html" class="nav-back">← Back</a>
+      <a href="index.html" class="name">Wen Ying</a>
+    </div>
+    <div class="links">
+      <a href="index.html">About</a>
+      <a href="index.html#work" class="active">Work</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ CASE STUDY HEADER ═══════════════════ -->
+
+<header class="case-header">
+  <div class="case-header-inner reveal">
+    <div class="case-header-content">
+      <div class="case-overline">Case Study 02 · Systems Design &amp; AI Strategy</div>
+      <h1>CityBalance — Redirecting Airbnb's AI to Solve Overtourism</h1>
+      <p class="case-desc">
+        A strategic initiative proposal arguing that Airbnb's existing AI infrastructure should be repurposed
+        to actively disperse tourists toward undervisited neighbourhoods — addressing overtourism not as a volume
+        problem, but as a systemic design failure aligned with UN SDG 11 (Sustainable Cities and Communities).
+      </p>
+      <div class="case-meta">
+        <div class="meta-item"><span class="meta-label">Context</span><span class="meta-value">UCL MSIN0051 — Digital Strategy &amp; Transformation</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">Feb – Apr 2026</span></div>
+        <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">12-min video presentation + process map</span></div>
+      </div>
+    </div>
+    <div class="case-header-images">
+      <img src="citybalance.jpg.png" alt="CityBalance Concept" class="img-logo">
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════ BODY ═══════════════════ -->
+
+<main class="case-body">
+
+  <!-- Phase: Consideration -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      Consideration — Three Converging Threats
+    </div>
+    <h2>The Airbnb model is under threat from three simultaneous directions</h2>
+    <p>
+      The process map begins by tracing three parallel problem chains that converge into a single strategic imperative. First, unregulated short-term rentals deplete housing supply and drive up long-term rents, threatening SDG 11 housing affordability targets and triggering severe regulatory backlash including total platform bans. Second, Airbnb's massive market scale ($12.24B projected revenue) translates to millions of tourist arrivals concentrated in the same hotspots — Venice, Barcelona — creating a "touristification" crisis that erodes community life and evolves overtourism into a systemic social equity problem. Third, while Airbnb actively integrates AI for personalisation, its AI roadmap ignores tourist distribution entirely — a strategic gap that competitors like Booking.com are already exploiting with OpenAI-powered trip planners that surface lesser-known destinations.
+    </p>
+  </div>
+
+  <!-- Diagram: Consideration -->
+  <div class="diagram-wrap reveal">
+    <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;">
+      <text x="380" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#7A7870" letter-spacing="0.1em">CONSIDERATION STAGE — THREE CONVERGING THREATS</text>
+      <g transform="translate(20,50)">
+        <rect x="0" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="78" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Housing Supply</text>
+        <text x="78" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Depletion</text>
+        <line x1="158" y1="26" x2="180" y2="26" stroke="#8B7355" stroke-width="0.8" marker-end="url(#ac1n)"/>
+        <rect x="183" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="261" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">SDG 11 Housing</text>
+        <text x="261" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Affordability Risk</text>
+        <line x1="341" y1="26" x2="363" y2="26" stroke="#8B7355" stroke-width="0.8" marker-end="url(#ac1n)"/>
+        <rect x="366" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="444" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Severe Regulatory</text>
+        <text x="444" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Backlash</text>
+      </g>
+      <g transform="translate(20,130)">
+        <rect x="0" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#A8A59E" stroke-width="1"/>
+        <text x="78" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Massive Scale</text>
+        <text x="78" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">$12.24B Revenue</text>
+        <line x1="158" y1="26" x2="180" y2="26" stroke="#A8A59E" stroke-width="0.8" marker-end="url(#ac2n)"/>
+        <rect x="183" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#A8A59E" stroke-width="1"/>
+        <text x="261" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Touristification</text>
+        <text x="261" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Crisis in Hotspots</text>
+        <line x1="341" y1="26" x2="363" y2="26" stroke="#A8A59E" stroke-width="0.8" marker-end="url(#ac2n)"/>
+        <rect x="366" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#A8A59E" stroke-width="1"/>
+        <text x="444" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Social Equity &amp;</text>
+        <text x="444" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Community Erosion</text>
+      </g>
+      <g transform="translate(20,210)">
+        <rect x="0" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#1A1A18" stroke-width="1"/>
+        <text x="78" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Advanced AI</text>
+        <text x="78" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Infrastructure Exists</text>
+        <line x1="158" y1="26" x2="180" y2="26" stroke="#1A1A18" stroke-width="0.8" marker-end="url(#ac3n)"/>
+        <rect x="183" y="0" width="155" height="52" rx="8" fill="#fff" stroke="#1A1A18" stroke-width="1"/>
+        <text x="261" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Strategic AI Gap:</text>
+        <text x="261" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">No Dispersal Focus</text>
+        <line x1="341" y1="26" x2="363" y2="26" stroke="#1A1A18" stroke-width="0.8" marker-end="url(#ac3n)"/>
+        <rect x="366" y="0" width="155" height="52" rx="8" fill="#F8F3ED" stroke="#1A1A18" stroke-width="1"/>
+        <text x="444" y="21" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Booking.com Already</text>
+        <text x="444" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Using AI for Dispersal</text>
+      </g>
+      <line x1="540" y1="76" x2="615" y2="305" stroke="#8B7355" stroke-width="0.8" opacity="0.25"/>
+      <line x1="540" y1="156" x2="615" y2="305" stroke="#A8A59E" stroke-width="0.8" opacity="0.25"/>
+      <line x1="540" y1="236" x2="615" y2="305" stroke="#1A1A18" stroke-width="0.8" opacity="0.25"/>
+      <g transform="translate(560,295)">
+        <rect x="0" y="0" width="185" height="60" rx="10" fill="#1A1A18"/>
+        <text x="92" y="22" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9" font-weight="500" fill="#fff">Airbnb model under threat</text>
+        <text x="92" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#A8A59E">+ falling behind in sustainable</text>
+        <text x="92" y="52" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#A8A59E">tourism technology</text>
+      </g>
+      <defs>
+        <marker id="ac1n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8B7355"/></marker>
+        <marker id="ac2n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#A8A59E"/></marker>
+        <marker id="ac3n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A18"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Three parallel threat chains converge into a single strategic imperative for Airbnb</div>
+  </div>
+
+  <div class="insight-callout reveal">
+    <div class="callout-label">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      </svg>
+      Key Insight
+    </div>
+    <p>
+      Airbnb already possesses the AI infrastructure to influence tourist distribution. Its algorithm was not designed to cause overtourism — but by optimising solely for booking conversion, it inadvertently concentrates visitors. The intervention requires <strong>reframing the objective of existing technology</strong>, not building new technology.
+    </p>
+  </div>
+
+  <!-- Phase: Proposal -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      Proposal — Strategic SDG Pivot
+    </div>
+    <h2>Shifting the AI roadmap from booking conversion to tourist distribution management</h2>
+    <p>
+      The proposal centres on a strategic SDG pivot: repurposing Airbnb's AI to actively manage tourist distribution, targeting SDG 11.a (urban-rural linkages) and SDG 11.4 (heritage protection). The implementation flows through four connected components — an ML-based recommender engine analysing user profiles and congestion data, real-time IoT integration with foot traffic sensors and event calendars, a conditional scaling decision based on existing infrastructure, and an interactive mobile app with AR cultural content. A partnership layer connects Airbnb to local governments, the UN Tourism Observatory in Barcelona, and airline partners. The pilot launches in Salzburg before multi-city rollout.
+    </p>
+  </div>
+
+  <!-- Diagram: Proposal -->
+  <div class="diagram-wrap reveal">
+    <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;">
+      <text x="380" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#7A7870" letter-spacing="0.1em">PROPOSAL STAGE — IMPLEMENTATION FLOW</text>
+      <g transform="translate(20,50)">
+        <rect x="0" y="0" width="155" height="75" rx="10" fill="#1A1A18"/>
+        <text x="78" y="28" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#fff">Strategic SDG Pivot</text>
+        <text x="78" y="44" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.65)">AI from conversion</text>
+        <text x="78" y="57" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.65)">to distribution mgmt</text>
+        <text x="78" y="70" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.4)">SDG 11.a + 11.4</text>
+      </g>
+      <line x1="178" y1="87" x2="198" y2="87" stroke="#1A1A18" stroke-width="1" marker-end="url(#pbn)"/>
+      <g transform="translate(201,50)">
+        <rect x="0" y="0" width="155" height="75" rx="10" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="78" y="25" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">AI Recommender</text>
+        <text x="78" y="40" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Engine</text>
+        <text x="78" y="56" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">User profiles + tourist flow</text>
+        <text x="78" y="68" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">→ alt. destinations</text>
+      </g>
+      <line x1="359" y1="87" x2="379" y2="87" stroke="#8B7355" stroke-width="1" marker-end="url(#ptn)"/>
+      <g transform="translate(382,50)">
+        <rect x="0" y="0" width="155" height="75" rx="10" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="78" y="25" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Real-Time IoT</text>
+        <text x="78" y="40" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" font-weight="500" fill="#6B5740">Integration</text>
+        <text x="78" y="56" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">Foot traffic, weather,</text>
+        <text x="78" y="68" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">event calendars</text>
+      </g>
+      <line x1="460" y1="128" x2="460" y2="155" stroke="#7A7870" stroke-width="1"/>
+      <g transform="translate(460,195)">
+        <polygon points="0,-38 70,0 0,38 -70,0" fill="#fff" stroke="#7A7870" stroke-width="1"/>
+        <text x="0" y="-8" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">IoT sensors</text>
+        <text x="0" y="6" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">available?</text>
+      </g>
+      <line x1="532" y1="195" x2="575" y2="195" stroke="#8B7355" stroke-width="1" marker-end="url(#ptn)"/>
+      <text x="548" y="188" font-family="Outfit,sans-serif" font-size="8" font-weight="500" fill="#8B7355">YES</text>
+      <g transform="translate(578,162)">
+        <rect x="0" y="0" width="165" height="66" rx="10" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="82" y="22" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" font-weight="500" fill="#6B5740">Pilot in Salzburg</text>
+        <text x="82" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">Collect user feedback</text>
+        <text x="82" y="52" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">→ multi-city rollout</text>
+      </g>
+      <line x1="460" y1="235" x2="460" y2="260" stroke="#4A3D2E" stroke-width="1" marker-end="url(#ppn)"/>
+      <text x="472" y="252" font-family="Outfit,sans-serif" font-size="8" font-weight="500" fill="#4A3D2E">NO</text>
+      <g transform="translate(380,263)">
+        <rect x="0" y="0" width="160" height="66" rx="10" fill="#fff" stroke="#4A3D2E" stroke-width="1"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" font-weight="500" fill="#4A3D2E">Govt &amp; UN Partners</text>
+        <text x="80" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">Tourism boards, UN Tourism</text>
+        <text x="80" y="49" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">Observatory Barcelona</text>
+        <text x="80" y="61" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#4A3D2E">→ Build IoT infrastructure</text>
+      </g>
+      <g transform="translate(578,263)">
+        <rect x="0" y="0" width="165" height="66" rx="10" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="82" y="20" text-anchor="middle" font-family="Outfit,sans-serif" font-size="9.5" font-weight="500" fill="#6B5740">Interactive Mobile App</text>
+        <text x="82" y="36" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">AI alternative routes</text>
+        <text x="82" y="49" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">Live crowd updates</text>
+        <text x="82" y="61" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" fill="#7A7870">AR cultural content</text>
+      </g>
+      <line x1="660" y1="230" x2="660" y2="260" stroke="#8B7355" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <line x1="543" y1="296" x2="575" y2="296" stroke="#4A3D2E" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <defs>
+        <marker id="pbn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A18"/></marker>
+        <marker id="ptn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8B7355"/></marker>
+        <marker id="ppn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4A3D2E"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Implementation flow with conditional IoT decision, Salzburg pilot, and multi-stakeholder partnership layer</div>
+  </div>
+
+  <!-- Phase: Outcome -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Outcome — Four Stakeholder Impact Streams
+    </div>
+    <h2>Mapping outcomes to the people who matter</h2>
+    <p>
+      The outcome stage maps impact across four distinct stakeholder groups. For communities: redistributed visitor flows, alleviated infrastructure strain, and improved quality of life fulfilling SDG 11 targets. For local businesses: economic dispersal distributes footfall to peri-urban areas, boosting small businesses in undervisited neighbourhoods. For tourists: enhanced experiences with less overcrowding and more authentic cultural immersion, supporting SDG 11.4 heritage protection. For Airbnb strategically: competitive leadership in sustainable tech, regulatory goodwill with local governments, and long-term platform growth aligned with sustainability goals.
+    </p>
+  </div>
+
+  <!-- Diagram: Outcome -->
+  <div class="diagram-wrap reveal">
+    <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;">
+      <text x="380" y="24" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#7A7870" letter-spacing="0.1em">OUTCOME STAGE — FOUR STAKEHOLDER IMPACT STREAMS</text>
+      <g transform="translate(20,80)">
+        <rect x="0" y="55" width="105" height="46" rx="23" fill="#1A1A18"/>
+        <text x="52" y="83" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="500" fill="#fff">Outcome</text>
+      </g>
+      <line x1="128" y1="115" x2="165" y2="70" stroke="#C8C4BC" stroke-width="0.8"/>
+      <line x1="128" y1="125" x2="165" y2="125" stroke="#C8C4BC" stroke-width="0.8"/>
+      <line x1="128" y1="138" x2="165" y2="185" stroke="#C8C4BC" stroke-width="0.8"/>
+      <line x1="128" y1="148" x2="165" y2="245" stroke="#C8C4BC" stroke-width="0.8"/>
+
+      <g transform="translate(168,48)">
+        <rect x="0" y="0" width="120" height="42" rx="21" fill="#fff" stroke="#8B7355" stroke-width="1"/>
+        <text x="60" y="18" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Community &amp;</text>
+        <text x="60" y="32" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Urban Impact</text>
+      </g>
+      <line x1="291" y1="69" x2="312" y2="69" stroke="#8B7355" stroke-width="0.8"/>
+      <rect x="315" y="54" width="110" height="30" rx="5" fill="#F8F3ED" stroke="#8B7355" stroke-width="0.6"/>
+      <text x="370" y="73" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#6B5740">Redistributed Flows</text>
+      <line x1="428" y1="69" x2="445" y2="69" stroke="#8B7355" stroke-width="0.6"/>
+      <rect x="448" y="54" width="110" height="30" rx="5" fill="#F8F3ED" stroke="#8B7355" stroke-width="0.6"/>
+      <text x="503" y="73" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#6B5740">Alleviated Infra. Strain</text>
+      <line x1="561" y1="69" x2="578" y2="69" stroke="#8B7355" stroke-width="0.6"/>
+      <rect x="581" y="49" width="150" height="40" rx="5" fill="#8B7355"/>
+      <text x="656" y="66" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="500" fill="#fff">Improved Quality of Life</text>
+      <text x="656" y="80" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">SDG 11 targets fulfilled</text>
+
+      <g transform="translate(168,108)">
+        <rect x="0" y="0" width="120" height="42" rx="21" fill="#fff" stroke="#A8A59E" stroke-width="1"/>
+        <text x="60" y="18" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Local</text>
+        <text x="60" y="32" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#5C5C5C">Businesses</text>
+      </g>
+      <line x1="291" y1="129" x2="312" y2="129" stroke="#A8A59E" stroke-width="0.8"/>
+      <rect x="315" y="114" width="110" height="30" rx="5" fill="#F5F4F0" stroke="#A8A59E" stroke-width="0.6"/>
+      <text x="370" y="133" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#5C5C5C">Economic Dispersal</text>
+      <line x1="428" y1="129" x2="445" y2="129" stroke="#A8A59E" stroke-width="0.6"/>
+      <rect x="448" y="109" width="283" height="40" rx="5" fill="#7A7870"/>
+      <text x="590" y="126" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="500" fill="#fff">Boost for Local Economies · SDG 11.a Urban-Rural Linkages</text>
+      <text x="590" y="140" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">Peri-urban &amp; rural areas gain tourist spending</text>
+
+      <g transform="translate(168,168)">
+        <rect x="0" y="0" width="120" height="42" rx="21" fill="#fff" stroke="#6B5740" stroke-width="1"/>
+        <text x="60" y="27" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#6B5740">Tourists</text>
+      </g>
+      <line x1="291" y1="189" x2="312" y2="189" stroke="#6B5740" stroke-width="0.8"/>
+      <rect x="315" y="174" width="110" height="30" rx="5" fill="#F8F3ED" stroke="#6B5740" stroke-width="0.6"/>
+      <text x="370" y="193" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#6B5740">Enhanced Experience</text>
+      <line x1="428" y1="189" x2="445" y2="189" stroke="#6B5740" stroke-width="0.6"/>
+      <rect x="448" y="169" width="283" height="40" rx="5" fill="#6B5740"/>
+      <text x="590" y="186" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="500" fill="#fff">Cultural Heritage Protection · SDG 11.4</text>
+      <text x="590" y="200" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">Authentic, immersive, less overcrowded</text>
+
+      <g transform="translate(168,228)">
+        <rect x="0" y="0" width="120" height="42" rx="21" fill="#fff" stroke="#1A1A18" stroke-width="1"/>
+        <text x="60" y="18" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">Airbnb</text>
+        <text x="60" y="32" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8.5" font-weight="500" fill="#1A1A18">(Strategic)</text>
+      </g>
+      <line x1="291" y1="249" x2="312" y2="249" stroke="#1A1A18" stroke-width="0.8"/>
+      <rect x="315" y="237" width="100" height="25" rx="5" fill="#F5F4F0" stroke="#1A1A18" stroke-width="0.6"/>
+      <text x="365" y="254" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#1A1A18">Competitive Lead</text>
+      <rect x="425" y="237" width="110" height="25" rx="5" fill="#F5F4F0" stroke="#1A1A18" stroke-width="0.6"/>
+      <text x="480" y="254" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="400" fill="#1A1A18">Regulatory Goodwill</text>
+      <rect x="545" y="232" width="140" height="35" rx="5" fill="#1A1A18"/>
+      <text x="615" y="253" text-anchor="middle" font-family="Outfit,sans-serif" font-size="7.5" font-weight="500" fill="#fff">Long-Term Platform Growth</text>
+    </svg>
+    <div class="diagram-caption">Four stakeholder streams with specific outcomes tied to SDG 11.a and SDG 11.4</div>
+  </div>
+
+  <!-- Phase: Reflection -->
+  <div class="phase reveal">
+    <div class="phase-label">
+      <svg class="phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/>
+      </svg>
+      Reflection
+    </div>
+    <h2>Technology is never neutral — its design encodes choices about who benefits</h2>
+    <p>
+      This project shaped my understanding of how digital platforms function as design interventions in urban spaces, whether intentionally or not. Building the process map across three stages — Consideration, Proposal, Outcome — forced me to think systemically: connecting macro-level industry forces through concrete technical proposals to measurable human outcomes across multiple stakeholder groups. The most impactful design change was not building new technology, but questioning whose interests existing technology serves — and reframing the problem through the lens of residents, local businesses, tourists, and the platform itself.
+    </p>
+  </div>
+
+</main>
+
+<!-- ═══════════════════ NEXT PROJECT ═══════════════════ -->
+
+<div class="next-project reveal">
+  <a href="richmond.html" class="next-project-inner">
+    <div>
+      <div class="next-project-label">Previous project</div>
+      <div class="next-project-title">Redesigning the Digital Engagement Journey for a Child Bereavement Charity</div>
+    </div>
+    <span class="next-project-arrow">→</span>
+  </a>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+
+<footer id="contact">
+  <p class="footer-heading">Let's connect</p>
+  <p class="footer-details">
+    <a href="mailto:uclqyin@ucl.ac.uk">uclqyin@ucl.ac.uk</a>
+    <span class="footer-sep"></span>
+    +44 07962633727
+    <span class="footer-sep"></span>
+    London, UK
+  </p>
+</footer>
+
+<script>
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
